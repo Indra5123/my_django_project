@@ -1,0 +1,33 @@
+- name: Deploy Django App
+  hosts: web
+  become: yes
+  tasks:
+    - name: Install required packages
+      dnf:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - git
+        - python3
+        - python3-pip
+
+    - name: Clone Django app
+      git:
+        repo: https://github.com/Indra5123/my_django_project.git
+        dest: /opt/myapp
+        version: master
+
+    - name: Create virtual environment
+      command: python3 -m venv /opt/myapp/venv
+      args:
+        creates: /opt/myapp/venv
+
+    - name: Install Python dependencies
+      pip:
+        requirements: /opt/myapp/requirements.txt
+        virtualenv: /opt/myapp/venv
+
+    - name: Start Django server in background
+      shell: |
+        pkill -f manage.py || true
+        nohup /opt/myapp/venv/bin/python /opt/myapp/manage.py runserver 0.0.0.0:8000 &
