@@ -1,6 +1,6 @@
 - name: Deploy Django App
-  hosts: web
-  become: false
+  hosts: local host
+  become: true
   tasks:
     - name: Install required packages
       dnf:
