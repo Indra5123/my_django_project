@@ -1,11 +1,12 @@
 - name: Deploy Django App
-  hosts: local host
+  hosts: localhost
   become: true
   tasks:
     - name: Install required packages
       dnf:
         name: "{{ item }}"
         state: present
+        update_cache: yes
       loop:
         - git
         - python3
