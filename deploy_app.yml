@@ -33,3 +33,7 @@
       shell: |
         pkill -f manage.py || true
         nohup /opt/myapp/venv/bin/python /opt/myapp/manage.py runserver 0.0.0.0:8000 &
+        args:
+        chdir: /opt/myapp
+      async: 3600
+      poll: 0
